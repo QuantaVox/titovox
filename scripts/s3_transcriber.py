@@ -10,7 +10,7 @@ s3 = boto3.client('s3')
 transcribe = boto3.client('transcribe')
 
 bucket_name = 'quantcldata'
-folder_name = 'TITOVOX/CHOPPED'
+folder_name = 'TITOVOX/CHOPPED/MP3'
 output_folder = 'titovox-transcripts'
 
 objects = s3.list_objects(Bucket=bucket_name, Prefix=folder_name)
@@ -23,7 +23,7 @@ for s3_object in objects['Contents']:   # could be done async
     file_name = s3_object['Key']
     media_format = file_name[-3:]
 
-    if media_format in ['mp3','mp4']:
+    if media_format in ['mp3']:
         transcribe_response = transcribe.start_transcription_job(
             TranscriptionJobName=(file_name.split('/')[-1])+'_v2',
             LanguageCode='es-ES',
