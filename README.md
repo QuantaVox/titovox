@@ -1,4 +1,4 @@
-** ETL steps **
+**ETL steps 
 
 1. upload files from a public folder (eg: Google Drive) to PREP_DATA
 2. copy files into a Colab (copy it here)
@@ -10,3 +10,5 @@
 8. upload to folder TRAINING_DATA
 
 TO DO: clip files using filename.mp3 + filename.ts (Tito speaks = (start,stop) timestamps)
+
+
