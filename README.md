@@ -14,4 +14,9 @@ TO DO: clip files using filename.mp3 + filename.ts (Tito speaks = (start,stop) t
 ## DONE
 1. Lucas subió archivos a un Drive. Sergio copió estos a este Github (PREP_DATA)
 75Mb in 39 files (4 audio formats): {'m4a': 26, 'mp4': 9, 'aac': 2, 'ogg': 2}
-2. Sergio transformó todos estos a mp3 usando AudioSegment (scripts/audio_transformer.py)
+2. Sergio transformó todos estos a mp3 usando AudioSegment (scripts/audio_transformer.py).
+3. YouTube SKIP (for now)
+4. Sergio subió estos archivos manualmente a una carpeta en s3://quantcldata/titovox (46 minutos)
+5. chatGPT me enseñó como subir una carpeta a AWS Transcribe (scripts/s3_transcriber.py)
+6. how many files end up in s3://titovox-transcripts? 
+   aws s3 sync s3://titovox-transcripts TRANSCRIPTS
