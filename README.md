@@ -1,10 +1,15 @@
+## 08-marzo (TV-7): Resumen Pipeline
+0. Lucas upload to Drive -> manual Drive2git -> PREP_DATA
+1. PREP_DATA -> manual git2s3 -> s3://quantcldata/titovox
+2. s3 -> scripts/s3_transcriber.py -> AWS Transcribe jobs
+3. Finished jobs -> S3 output buckets (one needs to wait)
+4. aws s3 sync s3://titovox-transcripts 
+
+TO DO: view as an Airflow/Bonobo graph
+IDEALLY:   one should be able to git clone this repo and run a single script that submits all files inside a given folder to AWS.
+
 ## ETL steps 
 
-1. upload files from a public folder (eg: Google Drive) to PREP_DATA
-2. copy files into a Colab (copy it here)
-3. extract mp3 from YT_URL, or video files
-4. upload mp3s to s3 (do this with a script from the cmd line)
-5. send mp3s to be AWS Transcribed
 6. recover output JSON files
 7. construct sentences=(.mp3, .txt)
 8. upload to folder TRAINING_DATA
@@ -19,4 +24,5 @@ TO DO: clip files using filename.mp3 + filename.ts (Tito speaks = (start,stop) t
 4. Sergio subió estos archivos manualmente a una carpeta en s3://quantcldata/titovox (46 minutos)
 5. chatGPT me enseñó como subir una carpeta a AWS Transcribe (scripts/s3_transcriber.py)
 6. how many files end up in s3://titovox-transcripts? 
+   
    aws s3 sync s3://titovox-transcripts TRANSCRIPTS
