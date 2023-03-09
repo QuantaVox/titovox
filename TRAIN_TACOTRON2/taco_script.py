@@ -1,5 +1,5 @@
 import os
-get_ipython().system('nvidia-smi')
+os.system('nvidia-smi')
 
 from numba import cuda 
 device = cuda.get_current_device()
@@ -10,25 +10,25 @@ from pydub import AudioSegment
 import os
 from os.path import exists
 import sys
-get_ipython().system('pip install phonemizer')
-get_ipython().system('pip install ffmpeg-normalize')
-get_ipython().system('pip install git+https://github.com/wkentaro/gdown.git')
-get_ipython().system('git clone -q https://github.com/rmcpantoja/tacotron2.git')
+os.system('pip install phonemizer')
+os.system('pip install ffmpeg-normalize')
+os.system('pip install git+https://github.com/wkentaro/gdown.git')
+os.system('git clone -q https://github.com/rmcpantoja/tacotron2.git')
 sys.path.append('tacotron2')
-get_ipython().run_line_magic('cd', 'content/tacotron2')
-get_ipython().system('git clone -q --recursive https://github.com/SortAnon/hifi-gan')
+os.run_line_magic('cd', 'content/tacotron2')
+os.system('git clone -q --recursive https://github.com/SortAnon/hifi-gan')
 sys.path.append('hifi-gan')
-get_ipython().system('pip install git+https://github.com/savoirfairelinux/num2words')
-get_ipython().system('git submodule init')
-get_ipython().system('git submodule update')
-get_ipython().system('pip install matplotlib numpy inflect librosa scipy unidecode pillow tensorboardX')
-get_ipython().system('apt-get install pv')
-get_ipython().system('apt-get -qq install sox')
-get_ipython().system('apt-get install jq')
-get_ipython().system('wget https://raw.githubusercontent.com/tonikelope/megadown/master/megadown -O megadown.sh')
-get_ipython().system('chmod 755 megadown.sh')
+os.system('pip install git+https://github.com/savoirfairelinux/num2words')
+os.system('git submodule init')
+os.system('git submodule update')
+os.system('pip install matplotlib numpy inflect librosa scipy unidecode pillow tensorboardX')
+os.system('apt-get install pv')
+os.system('apt-get -qq install sox')
+os.system('apt-get install jq')
+os.system('wget https://raw.githubusercontent.com/tonikelope/megadown/master/megadown -O megadown.sh')
+os.system('chmod 755 megadown.sh')
 
-get_ipython().run_line_magic('matplotlib', 'inline')
+os.run_line_magic('matplotlib', 'inline')
 
 import IPython.display as ipd
 import json
@@ -74,16 +74,16 @@ from tqdm.notebook import tqdm # Modern Notebook TQDM
 from distutils.dir_util import copy_tree
 import matplotlib.pylab as plt
 
-get_ipython().run_line_magic('cd', '/content/')
+os.run_line_magic('cd', '/content/')
 def get_hifigan(MODEL_ID, conf_name):
     # Download HiFi-GAN
     hifigan_pretrained_model = 'hifimodel_' + conf_name
     #gdown.download(d+MODEL_ID, hifigan_pretrained_model, quiet=False)
 
     if MODEL_ID == "universal":
-      get_ipython().system('wget "https://github.com/johnpaulbin/tacotron2/releases/download/Main/g_02500000" -O $hifigan_pretrained_model')
+      os.system('wget "https://github.com/johnpaulbin/tacotron2/releases/download/Main/g_02500000" -O $hifigan_pretrained_model')
     else:
-      get_ipython().system('gdown --id "$MODEL_ID" -O $hifigan_pretrained_model')
+      os.system('gdown --id "$MODEL_ID" -O $hifigan_pretrained_model')
 
     # Load HiFi-GAN
     conf = os.path.join("hifi-gan", conf_name + ".json")
@@ -104,15 +104,15 @@ hifigan, h, denoiser = get_hifigan("universal", "config_v1")
 # Download super-resolution HiFi-GAN
 hifigan_sr, h2, denoiser_sr = get_hifigan("14fOprFAIlCQkVRxsfInhEPG0n-xN4QOa", "config_32k")
 
-get_ipython().run_line_magic('cd', '/content/tacotron2')
+os.run_line_magic('cd', '/content/tacotron2')
 
 def download_from_google_drive(file_id, file_name):
   # download a file from the Google Drive link
-  get_ipython().system('rm -f ./cookie')
-  get_ipython().system('curl -c ./cookie -s -L "https://drive.google.com/uc?export=download&id={file_id}" > /dev/null')
-  confirm_text = get_ipython().getoutput("awk '/download/ {print $NF}' ./cookie")
+  os.system('rm -f ./cookie')
+  os.system('curl -c ./cookie -s -L "https://drive.google.com/uc?export=download&id={file_id}" > /dev/null')
+  confirm_text = os.getoutput("awk '/download/ {print $NF}' ./cookie")
   confirm_text = confirm_text[0]
-  get_ipython().system('curl -Lb ./cookie "https://drive.google.com/uc?export=download&confirm={confirm_text}&id={file_id}" -o {file_name}')
+  os.system('curl -Lb ./cookie "https://drive.google.com/uc?export=download&confirm={confirm_text}&id={file_id}" -o {file_name}')
 
 def create_mels():
     print("Generating Mels")
@@ -243,7 +243,7 @@ def save_checkpoint(model, optimizer, learning_rate, iteration, filepath):
     print("Model Saved")
 
 def plot_alignment(alignment, info=None):
-    get_ipython().run_line_magic('matplotlib', 'inline')
+    os.run_line_magic('matplotlib', 'inline')
     fig, ax = plt.subplots(figsize=(int(alignment_graph_width/100), int(alignment_graph_height/100)))
     im = ax.imshow(alignment, cmap='inferno', aspect='auto', origin='lower',
                    interpolation='none')
@@ -285,7 +285,7 @@ def validate(model, criterion, valset, iteration, batch_size, n_gpus,
         print("Epoch: {} Validation loss {}: {:9f}  Time: {:.1f}m LR: {:.6f}".format(epoch, iteration, val_loss,(time.perf_counter()-start_eposh)/60, learning_rate))
         logger.log_validation(val_loss, model, y, y_pred, iteration)
         if hparams.show_alignments:
-            get_ipython().run_line_magic('matplotlib', 'inline')
+            os.run_line_magic('matplotlib', 'inline')
             _, mel_outputs, gate_outputs, alignments = y_pred
             idx = random.randint(0, alignments.size(0) - 1)
             plot_alignment(alignments[idx].data.cpu().numpy().T)
@@ -354,6 +354,6 @@ def validate(model, criterion, valset, iteration, batch_size, n_gpus,
               ipd.display(ipd.Audio(sr_mix.astype(np.int16), rate=h2.sampling_rate))
               if save_audio:
                 if not os.path.isdir(audio_path+"/audio samples"):
-                  get_ipython().system('os.makedirs(audio_path+"/audio samples")')
+                  os.system('os.makedirs(audio_path+"/audio samples")')
                 scipy.io.wavfile.write(audio_path+"/audio samples/_"+epoch+"test.wav", h2.sampling_rate, sr_mix.astype(np.int16))
                 wav2mp3(audio_path+"/audio samples/_"+epoch+"test.wav")
