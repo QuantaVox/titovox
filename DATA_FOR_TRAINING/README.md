@@ -1,3 +1,12 @@
+# División
+
+División de audios en fragmentos de máximo 12000 milisegundos a 12 segundos
+
+## Dependencias
+* ffmpeg (sudo apt-get install ffmpeg o brew install ffmpeg)
+* pip3 install -r requirements.txt
+
+
 [links]
 
 (tutorial de clonación FakeYou)

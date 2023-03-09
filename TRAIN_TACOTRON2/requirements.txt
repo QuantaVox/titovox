@@ -1,0 +1,4 @@
+tensorflow
+pydub
+phonemizer
+ffmpeg-normalize
