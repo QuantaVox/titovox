@@ -4,5 +4,6 @@ phonemizer
 ffmpeg-normalize
 torch
 resampy
-librosa=0.8.1
+librosa==0.8.1
 ipywidgets
+apex
