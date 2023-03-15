@@ -2,3 +2,7 @@ tensorflow
 pydub
 phonemizer
 ffmpeg-normalize
+torch
+resampy
+librosa=0.8.1
+ipywidgets
