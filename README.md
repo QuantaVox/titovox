@@ -1,3 +1,8 @@
+## Update Julio UC Davis
+1. se revisó la segmentación de las frases usando AWS Transcribe
+2. con esto se construyó un conjunto (WAV,TXT)
+3. ahora intentaremos nuevamente con FakeYou
+
 ## 08-marzo (TV-7): Resumen Pipeline
 0. Lucas upload to Drive -> manual Drive2git -> PREP_DATA
 1. PREP_DATA -> manual git2s3 -> s3://quantcldata/titovox
