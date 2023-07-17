@@ -17,7 +17,7 @@ def runit(RANDOM = 42):
 
     tpotRFC = RandomForestClassifier(random_state=RANDOM)
     tpotRFC.fit(X_train, y_train)
-    return tpotRFC
+    return tpotRFC, X_test, y_test
 
 def auc_plot(tpot, X_test, y_test):
     y_pred_prob = tpot.predict_proba(X_test)[:, 1]
