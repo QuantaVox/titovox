@@ -10,20 +10,24 @@ from sklearn.tree import plot_tree
   #DecisionTreeClassifier, export_graphviz
 #import graphviz
 ###########################
-def runit(RANDOM = 42, RandomForest=True):
+def get_data():
     X = pd.read_csv('https://raw.githubusercontent.com/QuantaVox/titovox/main/ML/ParkSet2_X.csv')
     y = pd.read_csv('https://raw.githubusercontent.com/QuantaVox/titovox/main/ML/ParkSet2_y.csv')
     y = [yy[0] for yy in y.values]   # fix and save differently
+    return X,y 
+    
+def runit(RANDOM = 42, RandomForest=True):
+    X,y = get_data()
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=RANDOM)
     if RandomForest:
         print('FITTING RandomForest')
-        tpotRFC = RandomForestClassifier(random_state=RANDOM, n_estimators=100)
-        tpotRFC.fit(X_train, y_train)
-        return tpotRFC, X_test, y_test
+        estimator = RandomForestClassifier(random_state=RANDOM, n_estimators=100)
     else:
         print('TPOT Classifier')
-        tpotBest = TPOTClassifier(generations=20, cv=5, random_state=RANDOM)
-        return tpotBest, X_test, y_test
+        estimator = TPOTClassifier(generations=20, cv=5, random_state=RANDOM)
+
+    estimator.fit(X_train, y_train)
+    return estimator, X_test, y_test
 
 
 def auc_plot(tpot, X_test, y_test, plotit=False):
@@ -42,10 +46,11 @@ def auc_plot(tpot, X_test, y_test, plotit=False):
         plt.show()
     return auc_score
 
-def arp(seed, plotit=False):
-    t,X,y = runit(seed)
+def arp(seed, plotit=False, use_trees=False):
+    t,X,y = runit(seed, use_trees)
     auc_score = auc_plot(t,X,y,plotit)
-    vizTree(t,X,y,seed)
+    if use_trees:
+        vizTree(t,X,y,seed)
     return t  # 
 ########################
 def vizTree(tree, Xt, yt, seed):
