@@ -6,7 +6,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.utils import resample
 from sklearn.metrics import roc_auc_score, roc_curve
 from sklearn.ensemble import RandomForestClassifier
-
+from sklearn.tree import plot_tree
+  #DecisionTreeClassifier, export_graphviz
+#import graphviz
+###########################
 def runit(RANDOM = 42):
     X = pd.read_csv('https://raw.githubusercontent.com/QuantaVox/titovox/main/ML/ParkSet2_X.csv')
     y = pd.read_csv('https://raw.githubusercontent.com/QuantaVox/titovox/main/ML/ParkSet2_y.csv')
@@ -14,7 +17,7 @@ def runit(RANDOM = 42):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=RANDOM)
 
     print('FITTING RandomForest')
-    tpotRFC = RandomForestClassifier(random_state=RANDOM)
+    tpotRFC = RandomForestClassifier(random_state=RANDOM, n_estimators=100)
     tpotRFC.fit(X_train, y_train)
     return tpotRFC, X_test, y_test
 
@@ -32,7 +35,18 @@ def auc_plot(tpot, X_test, y_test, plotit=False):
         plt.title('Receiver Operating Characteristic (ROC) Curve')
         plt.legend()
         plt.show()
+    return auc_score
 
 def arp(seed, plotit=False):
     t,X,y = runit(seed)
-    auc_plot(t,X,y,plotit)
+    auc_score = auc_plot(t,X,y,plotit)
+    vizTree(t,X,y,seed)
+    return t  # 
+########################
+def vizTree(tree, Xt, yt, seed):
+    plt.figure(figsize=(20,12))
+    plot_tree(tree.estimators_[0], filled=True, 
+        feature_names=Xt.columns, 
+        class_names= ['Healthy','Parkinson'])
+    plt.show()
+    plt.savefig(f'test_{seed}.png')
