@@ -24,7 +24,7 @@ def runit(RANDOM = 42, RandomForest=True):
         estimator = RandomForestClassifier(random_state=RANDOM, n_estimators=100)
     else:
         print('TPOT Classifier')
-        estimator = TPOTClassifier(generations=20, cv=5, random_state=RANDOM)
+        estimator = TPOTClassifier(generations=20, cv=5, verbose=2, random_state=RANDOM)
 
     estimator.fit(X_train, y_train)
     return estimator, X_test, y_test
