@@ -10,16 +10,21 @@ from sklearn.tree import plot_tree
   #DecisionTreeClassifier, export_graphviz
 #import graphviz
 ###########################
-def runit(RANDOM = 42):
+def runit(RANDOM = 42, RandomForest=True):
     X = pd.read_csv('https://raw.githubusercontent.com/QuantaVox/titovox/main/ML/ParkSet2_X.csv')
     y = pd.read_csv('https://raw.githubusercontent.com/QuantaVox/titovox/main/ML/ParkSet2_y.csv')
     y = [yy[0] for yy in y.values]   # fix and save differently
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=RANDOM)
+    if RandomForest:
+        print('FITTING RandomForest')
+        tpotRFC = RandomForestClassifier(random_state=RANDOM, n_estimators=100)
+        tpotRFC.fit(X_train, y_train)
+        return tpotRFC, X_test, y_test
+    else:
+        print('TPOT Classifier')
+        tpotBest = TPOTClassifier(generations=20, cv=5, random_state=RANDOM)
+        return tpotBest, X_test, y_test
 
-    print('FITTING RandomForest')
-    tpotRFC = RandomForestClassifier(random_state=RANDOM, n_estimators=100)
-    tpotRFC.fit(X_train, y_train)
-    return tpotRFC, X_test, y_test
 
 def auc_plot(tpot, X_test, y_test, plotit=False):
     y_pred_prob = tpot.predict_proba(X_test)[:, 1]
